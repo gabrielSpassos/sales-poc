@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: sales-service
+    port: 8080
+  data:
+    mongodb:
+      uri: mongodb://root:password@${MONGO_URL:localhost}:27017/admin
+      database: admin
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+kafka:
+  bootstrap-servers: ${KAFKA_URL:localhost}:9092
+  sales-request-topic: sales-request-topic
+  consumer-group: sales-service
+
+client:
+  person-service:
+    url: http://vg8j7.mocklab.io
+  judicial-service:
+    url: http://vg8j7.mocklab.io
+  analysis-service:
+    url: http://vg8j7.mocklab.io
