@@ -4,6 +4,8 @@ import com.gabrielspassos.poc.client.kafka.event.PersonEvent;
 import com.gabrielspassos.poc.client.kafka.event.SaleEvent;
 import com.gabrielspassos.poc.dto.PersonDTO;
 import com.gabrielspassos.poc.dto.SaleDTO;
+import com.gabrielspassos.poc.entity.PersonEntity;
+import com.gabrielspassos.poc.entity.SaleEntity;
 import com.gabrielspassos.poc.enumerator.SaleStatusEnum;
 
 import java.time.LocalDateTime;
@@ -24,5 +26,14 @@ public class SaleStub {
         saleEvent.setId(id);
         saleEvent.setPerson(personEvent);
         return saleEvent;
+    }
+
+    public static SaleEntity createEntity(String id, SaleStatusEnum status, LocalDateTime dateTime, PersonEntity person) {
+        return SaleEntity.builder()
+                .id(id)
+                .status(status)
+                .registerDateTime(dateTime)
+                .person(person)
+                .build();
     }
 }

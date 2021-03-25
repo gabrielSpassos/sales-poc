@@ -1,6 +1,7 @@
 package com.gabrielspassos.poc.stub;
 
 import com.gabrielspassos.poc.client.http.response.JudicialResponse;
+import com.gabrielspassos.poc.dto.PersonJudicialValidationDTO;
 import com.gabrielspassos.poc.entity.PersonJudicialValidationEntity;
 import com.gabrielspassos.poc.enumerator.PersonJudicialValidationStatusEnum;
 
@@ -19,5 +20,13 @@ public class PersonJudicialStub {
         judicialResponse.setJudicialValidatorEntity(entity);
         judicialResponse.setStatus(status);
         return judicialResponse;
+    }
+
+    public static PersonJudicialValidationDTO createDTO(String id, String saleId, PersonJudicialValidationStatusEnum status) {
+        return PersonJudicialValidationDTO.builder()
+                .id(id)
+                .saleId(saleId)
+                .status(status)
+                .build();
     }
 }

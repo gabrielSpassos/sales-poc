@@ -20,7 +20,7 @@ public class PersonScoreService {
     private final AnalysisServiceClient analysisServiceClient;
     private final PersonScoreRepository personScoreRepository;
 
-    public Mono<PersonScoreDTO> savePersonScore(SaleDTO saleDTO) {
+    public Mono<PersonScoreDTO> createPersonScore(SaleDTO saleDTO) {
         String saleId = saleDTO.getId();
         PersonDTO person = saleDTO.getPerson();
 

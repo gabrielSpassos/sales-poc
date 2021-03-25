@@ -2,6 +2,7 @@ package com.gabrielspassos.poc.stub;
 
 import com.gabrielspassos.poc.client.kafka.event.PersonEvent;
 import com.gabrielspassos.poc.dto.PersonDTO;
+import com.gabrielspassos.poc.entity.PersonEntity;
 
 import java.time.LocalDate;
 
@@ -27,5 +28,16 @@ public class PersonStub {
         personEvent.setEmail(email);
         personEvent.setBirthdate(dateTime);
         return personEvent;
+    }
+
+    public static PersonEntity createEntity(String nationalIdentificationNumber, String firstName, String lastName,
+                                            String email, LocalDate dateTime) {
+        return PersonEntity.builder()
+                .nationalIdentificationNumber(nationalIdentificationNumber)
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .birthdate(dateTime)
+                .build();
     }
 }

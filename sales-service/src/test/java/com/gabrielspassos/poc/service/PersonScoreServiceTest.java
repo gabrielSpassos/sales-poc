@@ -57,11 +57,11 @@ class PersonScoreServiceTest {
         given(analysisServiceClient.getPersonScore(CPF)).willReturn(Mono.just(SCORE_RESPONSE));
         given(personScoreRepository.save(personScoreEntity)).willReturn(Mono.just(savedScoreEntity));
 
-        PersonScoreDTO block = personScoreService.savePersonScore(saleDTO).block();
+        PersonScoreDTO personScoreDTO = personScoreService.createPersonScore(saleDTO).block();
 
-        assertEquals(SCORE_ID, block.getId());
-        assertEquals(SALE_ID, block.getSaleId());
-        assertEquals(SCORE, block.getScore());
+        assertEquals(SCORE_ID, personScoreDTO.getId());
+        assertEquals(SALE_ID, personScoreDTO.getSaleId());
+        assertEquals(SCORE, personScoreDTO.getScore());
     }
 
 }

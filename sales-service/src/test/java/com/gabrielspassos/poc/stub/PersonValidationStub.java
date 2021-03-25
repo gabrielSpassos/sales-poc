@@ -1,6 +1,7 @@
 package com.gabrielspassos.poc.stub;
 
 import com.gabrielspassos.poc.client.http.response.PersonResponse;
+import com.gabrielspassos.poc.dto.PersonValidationDTO;
 import com.gabrielspassos.poc.entity.PersonValidationEntity;
 import com.gabrielspassos.poc.enumerator.PersonValidationStatusEnum;
 
@@ -18,5 +19,13 @@ public class PersonValidationStub {
         PersonResponse personResponse = new PersonResponse();
         personResponse.setStatus(status);
         return personResponse;
+    }
+
+    public static PersonValidationDTO createDTO(String id, String saleId, PersonValidationStatusEnum status) {
+        return PersonValidationDTO.builder()
+                .id(id)
+                .saleId(saleId)
+                .status(status)
+                .build();
     }
 }

@@ -13,6 +13,8 @@ import com.gabrielspassos.poc.entity.SaleEntity;
 import com.gabrielspassos.poc.enumerator.PersonJudicialValidationStatusEnum;
 import com.gabrielspassos.poc.enumerator.PersonValidationStatusEnum;
 import com.gabrielspassos.poc.enumerator.SaleStatusEnum;
+import com.gabrielspassos.poc.exception.PersonSaleValidationException;
+import com.gabrielspassos.poc.exception.ScoreSaleValidationException;
 import com.gabrielspassos.poc.repository.SaleRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,11 +74,11 @@ public class SaleService {
                 .filter(tuple -> {
                     return PersonValidationStatusEnum.APPROVED.equals(tuple.getT2().getStatus())
                             && PersonJudicialValidationStatusEnum.APPROVED.equals(tuple.getT3().getStatus());
-                }).switchIfEmpty(Flux.error(new RuntimeException())) //todo: rever
-                .flatMap(tuple -> personScoreService.savePersonScore(tuple.getT1())
+                }).switchIfEmpty(Flux.error(new PersonSaleValidationException()))
+                .flatMap(tuple -> personScoreService.createPersonScore(tuple.getT1())
                         .map(personScoreDTO -> Tuples.of(tuple.getT1(), personScoreDTO)))
                 .filter(tuple -> tuple.getT2().getScore() >= saleConfig.getMinimumValidScore())
-                .switchIfEmpty(Flux.error(new RuntimeException()))
+                .switchIfEmpty(Flux.error(new ScoreSaleValidationException()))
                 .map(tuple -> SaleEntityBuilder.build(tuple.getT1(), SaleStatusEnum.PROSPECT))
                 .flatMap(saleRepository::save)
                 .map(SaleDTOBuilder::build)
