@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
 	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'io.projectreactor.kafka:reactor-kafka:1.2.0.RELEASE'
 	implementation 'io.springfox:springfox-swagger2:3.0.0-SNAPSHOT'
 	implementation 'io.springfox:springfox-spring-webflux:3.0.0-SNAPSHOT'
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0-SNAPSHOT'
