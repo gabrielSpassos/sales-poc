@@ -23,7 +23,7 @@ public class AnalyzeSalesScoresScheduler {
     )
     public void analyzeSalesScores() {
         LockAssert.assertLocked();
-        log.info("Realizando expiração de assembleias");
+        log.info("Realizando analise de score de vendas");
         saleService.analyzeSalesScores()
                 .doOnComplete(() -> log.info("Analisado scores das vendas as assembleias"))
                 .subscribe();

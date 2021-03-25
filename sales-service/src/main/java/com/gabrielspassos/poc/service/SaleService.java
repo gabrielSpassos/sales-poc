@@ -35,40 +35,25 @@ public class SaleService {
     private final JudicialProducer judicialProducer;
     private final SaleConfig saleConfig;
 
-    public Mono<SaleEntity> createNewSale(PersonDTO personDTO) {
+    public Mono<SaleDTO> createNewSale(PersonDTO personDTO) {
         SaleEntity saleEntity = SaleEntityBuilder.build(personDTO);
 
         return saleRepository.save(saleEntity)
                 .flatMap(this::sendSaleEvent);
     }
 
-    public Mono<SaleEntity> getSaleById(String id) {
-        return saleRepository.findById(id)
-                .doOnSuccess(saleEntity -> log.info("Encontrado venda {}", saleEntity));
-    }
-
     public Flux<SaleDTO> analyzeSalesScores() {
         return saleRepository.findByStatus(SaleStatusEnum.LEAD)
                 .map(SaleDTOBuilder::build)
                 .flatMap(this::getPersonValidations)
-                .filter(tuple -> {
-                    return PersonValidationStatusEnum.APPROVED.equals(tuple.getT2().getStatus())
-                            && PersonJudicialValidationStatusEnum.APPROVED.equals(tuple.getT3().getStatus());
-                }).switchIfEmpty(Flux.error(new RuntimeException())) //todo: rever
-                .flatMap(tuple -> personScoreService.savePersonScore(tuple.getT1())
-                        .map(personScoreDTO -> Tuples.of(tuple.getT1(), personScoreDTO)))
-                .filter(tuple -> saleConfig.getMinimumValidScore() >= tuple.getT2().getScore())
-                .switchIfEmpty(Flux.error(new RuntimeException()))
-                .map(tuple -> SaleEntityBuilder.build(tuple.getT1(), SaleStatusEnum.PROSPECT))
-                .flatMap(saleRepository::save)
-                .map(SaleDTOBuilder::build);
+                .flatMap(this::updateSalesStatus);
     }
 
-    private Mono<SaleEntity> sendSaleEvent(SaleEntity saleEntity) {
-        String saleId = saleEntity.getId();
+    private Mono<SaleDTO> sendSaleEvent(SaleEntity saleEntity) {
+        SaleDTO saleDTO = SaleDTOBuilder.build(saleEntity);
 
-        return Mono.zip(personProducer.sendVoteToTopic(saleId), judicialProducer.sendVoteToTopic(saleId))
-                .map(tuple -> saleEntity);
+        return Mono.zip(personProducer.sendVoteToTopic(saleDTO), judicialProducer.sendVoteToTopic(saleDTO))
+                .map(tuple -> saleDTO);
     }
 
     private Mono<Tuple3<SaleDTO, PersonValidationDTO, PersonJudicialValidationDTO>> getPersonValidations(SaleDTO saleDTO) {
@@ -78,5 +63,30 @@ public class SaleService {
                 personValidationService.getPersonValidationBySaleId(saleId),
                 personJudicialValidationService.getJudicialValidationBySaleId(saleId)
         ).map(tuple -> Tuples.of(saleDTO, tuple.getT1(), tuple.getT2()));
+    }
+
+    private Flux<SaleDTO> updateSalesStatus(Tuple3<SaleDTO, PersonValidationDTO, PersonJudicialValidationDTO> tuple3) {
+        SaleDTO saleDTO = tuple3.getT1();
+
+        return Flux.just(tuple3)
+                .filter(tuple -> {
+                    return PersonValidationStatusEnum.APPROVED.equals(tuple.getT2().getStatus())
+                            && PersonJudicialValidationStatusEnum.APPROVED.equals(tuple.getT3().getStatus());
+                }).switchIfEmpty(Flux.error(new RuntimeException())) //todo: rever
+                .flatMap(tuple -> personScoreService.savePersonScore(tuple.getT1())
+                        .map(personScoreDTO -> Tuples.of(tuple.getT1(), personScoreDTO)))
+                .filter(tuple -> tuple.getT2().getScore() >= saleConfig.getMinimumValidScore())
+                .switchIfEmpty(Flux.error(new RuntimeException()))
+                .map(tuple -> SaleEntityBuilder.build(tuple.getT1(), SaleStatusEnum.PROSPECT))
+                .flatMap(saleRepository::save)
+                .map(SaleDTOBuilder::build)
+                .onErrorResume(throwable -> saveErrorSale(saleDTO));
+    }
+
+    private Mono<SaleDTO> saveErrorSale(SaleDTO saleDTO) {
+        SaleEntity saleEntity = SaleEntityBuilder.build(saleDTO, SaleStatusEnum.REJECT);
+        return saleRepository.save(saleEntity)
+                .map(SaleDTOBuilder::build)
+                .doOnSuccess(dto -> log.info("Saldo vendo rejeitada {}", dto));
     }
 }

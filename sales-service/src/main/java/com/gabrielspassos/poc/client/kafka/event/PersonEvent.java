@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleEvent {
+public class PersonEvent {
 
-    private String id;
-    private PersonEvent person;
+    private String nationalIdentificationNumber;
+    private String birthdate;
+    private String firstName;
+    private String lastName;
+    private String email;
 
 }

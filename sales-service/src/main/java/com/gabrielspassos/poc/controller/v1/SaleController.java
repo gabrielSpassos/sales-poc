@@ -2,7 +2,7 @@ package com.gabrielspassos.poc.controller.v1;
 
 import com.gabrielspassos.poc.controller.v1.request.PersonRequest;
 import com.gabrielspassos.poc.dto.PersonDTO;
-import com.gabrielspassos.poc.entity.SaleEntity;
+import com.gabrielspassos.poc.dto.SaleDTO;
 import com.gabrielspassos.poc.service.SaleService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class SaleController implements BaseVersion {
     private final SaleService saleService;
 
     @PostMapping("/sales")
-    public Mono<SaleEntity> createSale(@RequestBody PersonRequest personRequest) {
+    public Mono<SaleDTO> createSale(@RequestBody PersonRequest personRequest) {
         log.info("Iniciado a criação de venda, {}", personRequest);
         PersonDTO personDTO = modelMapper.map(personRequest, PersonDTO.class);
         return saleService.createNewSale(personDTO)

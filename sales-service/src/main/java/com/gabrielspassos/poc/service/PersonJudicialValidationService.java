@@ -17,14 +17,12 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class PersonJudicialValidationService {
 
-    private final SaleService saleService;
     private final JudicialServiceClient judicialServiceClient;
     private final PersonJudicialValidationRepository personJudicialValidationRepository;
 
     public Mono<PersonJudicialValidationEntity> createPersonJudicialValidation(SaleEvent saleEvent) {
         log.info("Criando validação judicial {}", saleEvent);
-        return saleService.getSaleById(saleEvent.getId())
-                .flatMap(saleEntity -> judicialServiceClient.getJudicialValidationStatus(saleEntity.getPerson().getNationalIdentificationNumber()))
+        return judicialServiceClient.getJudicialValidationStatus(saleEvent.getPerson().getNationalIdentificationNumber())
                 .map(judicialResponse -> PersonJudicialValidationEntityBuilder.build(saleEvent.getId(), judicialResponse))
                 .flatMap(personJudicialValidationRepository::save);
     }
