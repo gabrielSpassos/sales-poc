@@ -11,6 +11,12 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+sales:
+  score:
+    minimum-valid: 61
+  scheduler:
+    analyze-sales-scores-milliseconds-time: 300000 # 5 min
+
 kafka:
 #  bootstrap-servers: ${KAFKA_URL:localhost}:9092
   bootstrap-servers: localhost:9092

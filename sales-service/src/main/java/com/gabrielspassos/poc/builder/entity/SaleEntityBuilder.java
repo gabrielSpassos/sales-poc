@@ -1,6 +1,7 @@
 package com.gabrielspassos.poc.builder.entity;
 
 import com.gabrielspassos.poc.dto.PersonDTO;
+import com.gabrielspassos.poc.dto.SaleDTO;
 import com.gabrielspassos.poc.entity.PersonEntity;
 import com.gabrielspassos.poc.entity.SaleEntity;
 import com.gabrielspassos.poc.enumerator.SaleStatusEnum;
@@ -16,6 +17,17 @@ public class SaleEntityBuilder {
                 .id(null)
                 .registerDateTime(LocalDateTime.now())
                 .status(SaleStatusEnum.LEAD)
+                .person(personEntity)
+                .build();
+    }
+
+    public static SaleEntity build(SaleDTO saleDTO, SaleStatusEnum status) {
+        PersonEntity personEntity = PersonEntityBuilder.build(saleDTO.getPerson());
+
+        return SaleEntity.builder()
+                .id(saleDTO.getId())
+                .registerDateTime(saleDTO.getRegisterDateTime())
+                .status(status)
                 .person(personEntity)
                 .build();
     }
