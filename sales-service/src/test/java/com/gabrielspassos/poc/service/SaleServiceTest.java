@@ -12,6 +12,7 @@ import com.gabrielspassos.poc.entity.PersonEntity;
 import com.gabrielspassos.poc.entity.SaleEntity;
 import com.gabrielspassos.poc.enumerator.PersonJudicialValidationStatusEnum;
 import com.gabrielspassos.poc.enumerator.PersonValidationStatusEnum;
+import com.gabrielspassos.poc.exception.NotFoundSaleException;
 import com.gabrielspassos.poc.repository.SaleRepository;
 import com.gabrielspassos.poc.stub.PersonJudicialStub;
 import com.gabrielspassos.poc.stub.PersonStub;
@@ -24,6 +25,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,6 +39,7 @@ import static com.gabrielspassos.poc.enumerator.SaleStatusEnum.REJECT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -209,6 +212,31 @@ class SaleServiceTest {
 
         assertEquals(1, sales.size());
         assertEquals(REJECT, sales.get(0).getStatus());
+    }
+
+    @Test
+    public void shouldReturnSaleById() {
+        PersonEntity personEntity = PersonStub.createEntity(CPF, FIRST_NAME, LAST_NAME, EMAIL, BIRTH_DATE);
+        SaleEntity entity = SaleStub.createEntity(ID, PROSPECT, DATE_TIME, personEntity);
+
+        given(saleRepository.findById(ID)).willReturn(Mono.just(entity));
+
+        SaleDTO saleDTO = saleService.getSaleById(ID).block();
+
+        assertEquals(ID, saleDTO.getId());
+        assertEquals(PROSPECT, saleDTO.getStatus());
+    }
+
+    @Test
+    public void shouldThrowErrorForNotFoundSale() {
+        given(saleRepository.findById(ID)).willReturn(Mono.empty());
+
+        NotFoundSaleException error = assertThrows(NotFoundSaleException.class,
+                () -> saleService.getSaleById(ID).block());
+
+        assertEquals(HttpStatus.NOT_FOUND, error.getHttpStatus());
+        assertEquals("Não encontrado venda", error.getMessage());
+        assertEquals("5", error.getCode());
     }
 
 }

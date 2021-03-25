@@ -13,6 +13,7 @@ import com.gabrielspassos.poc.entity.SaleEntity;
 import com.gabrielspassos.poc.enumerator.PersonJudicialValidationStatusEnum;
 import com.gabrielspassos.poc.enumerator.PersonValidationStatusEnum;
 import com.gabrielspassos.poc.enumerator.SaleStatusEnum;
+import com.gabrielspassos.poc.exception.NotFoundSaleException;
 import com.gabrielspassos.poc.exception.PersonSaleValidationException;
 import com.gabrielspassos.poc.exception.ScoreSaleValidationException;
 import com.gabrielspassos.poc.repository.SaleRepository;
@@ -42,6 +43,12 @@ public class SaleService {
 
         return saleRepository.save(saleEntity)
                 .flatMap(this::sendSaleEvent);
+    }
+
+    public Mono<SaleDTO> getSaleById(String id) {
+        return saleRepository.findById(id)
+                .switchIfEmpty(Mono.error(new NotFoundSaleException()))
+                .map(SaleDTOBuilder::build);
     }
 
     public Flux<SaleDTO> analyzeSalesScores() {

@@ -1,0 +1,12 @@
+{
+  "id": "605ccdbc9dfc05477ff7970a",
+  "status": "LEAD",
+  "registerDateTime": "2021-03-25T14:51:56.274",
+  "person": {
+    "nationalIdentificationNumber": "06516227004",
+    "birthdate": "1995-03-25",
+    "firstName": "Jose",
+    "lastName": "Silva",
+    "email": "jose.silva@gmail.com"
+  }
+}
