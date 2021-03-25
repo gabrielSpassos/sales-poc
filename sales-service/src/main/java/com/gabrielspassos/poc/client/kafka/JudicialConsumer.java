@@ -26,7 +26,7 @@ public class JudicialConsumer {
             log.info("Partição {}, Offset {}, Mensagem: {}", partition, offset, event);
             SaleEvent saleEvent = convertValue(event);
             personJudicialValidationService.createPersonJudicialValidation(saleEvent)
-                    .doOnSuccess(entity -> log.info("Validação judicial salva {}", entity))
+                    .doOnSuccess(dto -> log.info("Validação judicial salva {}", dto))
                     .doFinally(signalType -> ack.acknowledge())
                     .subscribe();
         } catch (Exception e) {

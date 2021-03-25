@@ -15,11 +15,10 @@ sales:
   score:
     minimum-valid: 61
   scheduler:
-    analyze-sales-scores-milliseconds-time: 60000 #300000 # 5 min
+    analyze-sales-scores-milliseconds-time: 300000 # 5 min
 
 kafka:
-#  bootstrap-servers: ${KAFKA_URL:localhost}:9092
-  bootstrap-servers: localhost:9092
+  bootstrap-servers: ${KAFKA_URL:localhost}:9092
   sales-person-validation-request-topic: sales-person-validation-request-topic
   sales-judicial-validation-request-topic: sales-judicial-validation-request-topic
   consumer-group: sales-service

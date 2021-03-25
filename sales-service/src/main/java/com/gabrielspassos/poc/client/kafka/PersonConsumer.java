@@ -26,7 +26,7 @@ public class PersonConsumer {
             log.info("Partição {}, Offset {}, Mensagem: {}", partition, offset, event);
             SaleEvent saleEvent = convertValue(event);
             personValidationService.createPersonValidation(saleEvent)
-                    .doOnSuccess(entity -> log.info("Validação da pessoa salva {}", entity))
+                    .doOnSuccess(dto -> log.info("Validação da pessoa salva {}", dto))
                     .doFinally(signalType -> ack.acknowledge())
                     .subscribe();
         } catch (Exception e) {

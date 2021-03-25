@@ -1,0 +1,21 @@
+package com.gabrielspassos.poc.stub;
+
+import com.gabrielspassos.poc.client.http.response.ScoreResponse;
+import com.gabrielspassos.poc.entity.PersonScoreEntity;
+
+public class ScoreStub {
+
+    public static ScoreResponse createResponse(Integer score) {
+        ScoreResponse scoreResponse = new ScoreResponse();
+        scoreResponse.setScore(score);
+        return scoreResponse;
+    }
+
+    public static PersonScoreEntity createEntity(String id, String saleId, Integer score) {
+        return PersonScoreEntity.builder()
+                .id(id)
+                .saleId(saleId)
+                .score(score)
+                .build();
+    }
+}

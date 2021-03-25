@@ -7,7 +7,7 @@ import com.gabrielspassos.poc.client.http.PersonServiceClient;
 import com.gabrielspassos.poc.client.kafka.event.SaleEvent;
 import com.gabrielspassos.poc.dto.PersonDTO;
 import com.gabrielspassos.poc.dto.PersonValidationDTO;
-import com.gabrielspassos.poc.entity.PersonValidationEntity;
+import com.gabrielspassos.poc.exception.NotFoundPersonValidationException;
 import com.gabrielspassos.poc.repository.PersonValidationRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,18 +22,19 @@ public class PersonValidationService {
     private final PersonServiceClient personServiceClient;
     private final PersonValidationRepository personValidationRepository;
 
-    public Mono<PersonValidationEntity> createPersonValidation(SaleEvent saleEvent) {
+    public Mono<PersonValidationDTO> createPersonValidation(SaleEvent saleEvent) {
         log.info("Criando validação de pessoa {}", saleEvent);
         PersonDTO personDTO = PersonDTOBuilder.build(saleEvent.getPerson());
         return personServiceClient.getPersonValidationStatus(personDTO)
                 .map(personResponse -> PersonValidationEntityBuilder.build(saleEvent.getId(), personResponse))
-                .flatMap(personValidationRepository::save);
+                .flatMap(personValidationRepository::save)
+                .map(PersonValidationDTOBuilder::build);
     }
 
     public Mono<PersonValidationDTO> getPersonValidationBySaleId(String saleId) {
         log.info("Buscando validação de pessoa da venda {}", saleId);
         return personValidationRepository.findBySaleId(saleId)
-                .switchIfEmpty(Mono.error(new RuntimeException())) //todo: rever
+                .switchIfEmpty(Mono.error(new NotFoundPersonValidationException()))
                 .map(PersonValidationDTOBuilder::build)
                 .doOnSuccess(dto -> log.info("Localizado validação de pessoa da venda {}: {}", saleId, dto));
     }
