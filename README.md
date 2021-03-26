@@ -5,6 +5,11 @@
 
 ## Como usar
 
+#### Forma mais simples:
+
+ - ``` chmod +x start.sh ```
+ - ``` sh start.sh ```
+
 #### Forma detalhada:
 
 - Executar testes unitários
