@@ -34,6 +34,12 @@
 - ``` docker-compose up ```
 <br>
 
+- Execute integration tests
+- ``` cd sales-integration-test ```
+- ``` ./gradlew clean test ``` 
+- Report at ./build/reports/tests/test/index.html
+<br>
+
 - Application Swagger: [Swagger-UI](http://localhost:8080/swagger-ui.html)
 - Kafdrop to access broker and topic: [Kafdrop](http://localhost:19000/)
 
