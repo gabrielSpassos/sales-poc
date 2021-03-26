@@ -3,6 +3,35 @@
 * [Kafdrop](http://localhost:19000/)
 * [Sales-Service](http://localhost:8080/swagger-ui.html)
 
+## Como usar
+
+#### Forma detalhada:
+
+- Executar testes unitários
+- ``` cd sales-service ```
+- ``` ./gradlew clean test ```
+- Reporte em ./build/reports/tests/test/index.html
+<br>
+
+- Executar testes de mutação
+- ``` cd sales-service ```
+- ``` ./gradlew pitest ```
+- Reporte em ./build/reports/pitest/index.html
+<br>
+
+- Buildar o projeto
+- ``` cd sales-service ```
+- ``` ./gradlew clean build ```
+<br>
+
+- Executar projeto 
+- ``` docker-compose build ```
+- ``` docker-compose up ```
+<br>
+
+- Acessar swagger da aplicação: [Swagger-UI](http://localhost:8080/swagger-ui.html)
+- Acessar kafdrop para visualização do tópico: [Kafdrop](http://localhost:19000/)
+
 ## Tecnologias
 * **SpringBoot Webflux**: framework reativo do SpringBoot que auxilia na performance de I/O da aplicação. 
 * **MongoDB**: banco de dados `schemaless` facilitando no desenvolvimento, com driver reativo já adequado para o uso do **SpringBoot Webflux**
