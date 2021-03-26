@@ -2,6 +2,8 @@ package com.gabrielspassos.poc.client.http;
 
 import com.gabrielspassos.poc.client.http.response.PersonResponse;
 import com.gabrielspassos.poc.dto.PersonDTO;
+import com.gabrielspassos.poc.exception.NotFoundPersonException;
+import com.gabrielspassos.poc.exception.UnexpectedInternalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -33,8 +35,8 @@ public class PersonServiceClient {
                 .uri(uri)
                 .headers(getHeaders())
                 .retrieve()
-                .onStatus(HttpStatus.NOT_FOUND::equals, response -> Mono.error(new RuntimeException())) //todo: melhorar erro
-                .onStatus(HttpStatus::isError, response -> Mono.error(new RuntimeException()))
+                .onStatus(HttpStatus.NOT_FOUND::equals, response -> Mono.error(new NotFoundPersonException()))
+                .onStatus(HttpStatus::isError, response -> Mono.error(new UnexpectedInternalException()))
                 .bodyToMono(PersonResponse.class)
                 .doOnSuccess(response -> log.info("GET {} | Response: {}", uri, response));
     }

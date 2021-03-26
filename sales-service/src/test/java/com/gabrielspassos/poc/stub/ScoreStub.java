@@ -12,6 +12,12 @@ public class ScoreStub {
         return scoreResponse;
     }
 
+    public static String createResponseBody() {
+        return "{\n" +
+                "    \"score\": 33\n" +
+                "}";
+    }
+
     public static PersonScoreEntity createEntity(String id, String saleId, Integer score) {
         return PersonScoreEntity.builder()
                 .id(id)

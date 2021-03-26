@@ -22,6 +22,13 @@ public class PersonJudicialStub {
         return judicialResponse;
     }
 
+    public static String createResponseBody() {
+        return "{\n" +
+                "    \"status\": \"REPROVED\",\n" +
+                "    \"judicialValidatorEntity\": \"STF-BR\"\n" +
+                "}";
+    }
+
     public static PersonJudicialValidationDTO createDTO(String id, String saleId, PersonJudicialValidationStatusEnum status) {
         return PersonJudicialValidationDTO.builder()
                 .id(id)

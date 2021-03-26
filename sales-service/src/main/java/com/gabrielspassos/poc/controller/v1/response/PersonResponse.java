@@ -2,8 +2,6 @@ package com.gabrielspassos.poc.controller.v1.response;
 
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 public class PersonResponse {
 

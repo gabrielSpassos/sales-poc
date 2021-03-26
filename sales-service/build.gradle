@@ -26,6 +26,7 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger2:3.0.0-SNAPSHOT'
 	implementation 'io.springfox:springfox-spring-webflux:3.0.0-SNAPSHOT'
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0-SNAPSHOT'
+	testImplementation 'com.github.tomakehurst:wiremock-standalone:2.24.1'
 	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.4.8'
 	implementation 'net.javacrumbs.shedlock:shedlock-spring:4.1.0'
 	implementation 'net.javacrumbs.shedlock:shedlock-provider-mongo-reactivestreams:4.12.0'
