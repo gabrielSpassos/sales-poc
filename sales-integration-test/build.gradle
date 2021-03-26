@@ -1,0 +1,29 @@
+plugins {
+	id 'java'
+}
+
+group = 'com.gabrielspassos.poc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+sourceSets {
+	test {
+		resources {
+			srcDir file('src/test/java')
+			exclude '**/*.java'
+		}
+	}
+}
+
+dependencies {
+	testImplementation 'com.intuit.karate:karate-apache:0.9.6'
+	testImplementation 'com.intuit.karate:karate-junit5:0.9.6'
+}
+
+test {
+	useJUnitPlatform()
+}
