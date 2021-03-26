@@ -1,12 +1,10 @@
 package com.gabrielspassos.poc.client.http;
 
 import com.gabrielspassos.poc.client.http.response.JudicialResponse;
-import com.gabrielspassos.poc.client.http.response.ScoreResponse;
 import com.gabrielspassos.poc.enumerator.PersonJudicialValidationStatusEnum;
 import com.gabrielspassos.poc.exception.NotFoundPersonException;
 import com.gabrielspassos.poc.exception.UnexpectedInternalException;
 import com.gabrielspassos.poc.stub.PersonJudicialStub;
-import com.gabrielspassos.poc.stub.ScoreStub;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +19,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class JudicialServiceClientTest {
