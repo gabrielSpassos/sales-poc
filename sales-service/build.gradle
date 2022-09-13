@@ -23,9 +23,9 @@ repositories {
 dependencies {
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'io.projectreactor.kafka:reactor-kafka:1.2.0.RELEASE'
-	implementation 'io.springfox:springfox-swagger2:3.0.0-SNAPSHOT'
-	implementation 'io.springfox:springfox-spring-webflux:3.0.0-SNAPSHOT'
-	implementation 'io.springfox:springfox-swagger-ui:3.0.0-SNAPSHOT'
+	implementation 'io.springfox:springfox-swagger2:3.0.0'
+	implementation 'io.springfox:springfox-spring-webflux:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	testImplementation 'com.github.tomakehurst:wiremock-standalone:2.24.1'
 	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.4.8'
 	implementation 'net.javacrumbs.shedlock:shedlock-spring:4.1.0'
